@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: neondash-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: neondash
+      POSTGRES_PASSWORD: neondash
+      POSTGRES_DB: neondash
+    ports:
+      - "5432:5432"
+    volumes:
+      - neondash_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U neondash -d neondash"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  neondash_pg:

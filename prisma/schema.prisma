@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  username      String   @unique
+  email         String   @unique
+  passwordHash  String
+  role          String   @default("user") // user | admin
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  totalStars    Int      @default(0)
+  totalAttempts Int      @default(0)
+  totalJumps    Int      @default(0)
+  totalDeaths   Int      @default(0)
+  levelsBeaten  Int      @default(0)
+  favoriteLevel String?
+  avatarColor   String   @default("#00f5ff")
+  bio           String   @default("")
+  country       String?
+
+  progress      LevelProgress[]
+  scores        Score[]
+  achievements  UserAchievement[]
+  customLevels  CustomLevel[]
+  likes         LevelLike[]
+
+  @@index([totalStars])
+  @@index([username])
+}
+
+model LevelProgress {
+  id             String    @id @default(cuid())
+  userId         String
+  levelId        String
+  bestPercentage Float     @default(0)
+  bestTimeMs     Int?
+  attempts       Int       @default(0)
+  jumps          Int       @default(0)
+  stars          Int       @default(0)
+  coins          Int       @default(0)
+  completed      Boolean   @default(false)
+  practiceUsed   Boolean   @default(false)
+  replayData     Json?
+  completedAt    DateTime?
+  updatedAt      DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, levelId])
+  @@index([levelId, bestPercentage(sort: Desc)])
+}
+
+model Score {
+  id         String   @id @default(cuid())
+  userId     String
+  levelId    String
+  percentage Float
+  attempts   Int
+  timeMs     Int
+  stars      Int      @default(0)
+  coins      Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([levelId, percentage(sort: Desc), timeMs(sort: Asc)])
+  @@index([userId, createdAt])
+}
+
+model Achievement {
+  id          String @id
+  name        String
+  description String
+  icon        String
+  category    String @default("general")
+  requirement Int    @default(1)
+
+  unlocks UserAchievement[]
+}
+
+model UserAchievement {
+  userId        String
+  achievementId String
+  unlockedAt    DateTime @default(now())
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+
+  @@id([userId, achievementId])
+}
+
+model CustomLevel {
+  id          String   @id @default(cuid())
+  authorId    String
+  name        String
+  description String   @default("")
+  difficulty  Int      @default(1)
+  data        Json
+  plays       Int      @default(0)
+  likes       Int      @default(0)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  author User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  likedBy LevelLike[]
+
+  @@index([published, likes(sort: Desc)])
+  @@index([authorId])
+}
+
+model LevelLike {
+  userId  String
+  levelId String
+  user    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  level   CustomLevel @relation(fields: [levelId], references: [id], onDelete: Cascade)
+
+  @@id([userId, levelId])
+}
+
+model DailyChallenge {
+  id        String   @id @default(cuid())
+  dateKey   String   @unique
+  seed      Int
+  levelId   String
+  createdAt DateTime @default(now())
+}

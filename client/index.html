@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+    <meta name="theme-color" content="#05010d" />
+    <meta name="description" content="NEON DASH — a tight, glowing Geometry Dash-style rhythm platformer. Jump, fly, and grind the global leaderboard." />
+    <meta property="og:title" content="NEON DASH" />
+    <meta property="og:description" content="A neon geometry gauntlet. Tight jumps. Instant retries. Global glory." />
+    <meta property="og:image" content="/og.png" />
+    <title>NEON DASH</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="bg">
+      <div class="orb o1"></div>
+      <div class="orb o2"></div>
+      <div class="orb o3"></div>
+      <div class="grid"></div>
+    </div>
+    <div id="scanlines"></div>
+
+    <div id="app">
+      <section id="view-boot" class="view active">
+        <div class="boot-mark">ND</div>
+        <h1 class="logo">NEON<span>DASH</span></h1>
+        <p class="tag">RHYTHM · GEOMETRY · FLOW</p>
+        <div class="boot-bar"><i></i></div>
+        <p class="muted" id="boot-status">calibrating thrusters…</p>
+      </section>
+
+      <section id="view-menu" class="view">
+        <header class="topbar">
+          <div class="brand">NEON<span>DASH</span></div>
+          <div class="top-actions">
+            <button class="chip" id="btn-online" title="Players online">● 0</button>
+            <button class="chip" id="btn-user">GUEST</button>
+          </div>
+        </header>
+        <div class="menu-hero">
+          <div class="hero-cube" aria-hidden="true">
+            <div class="cube3d">
+              <i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+          </div>
+          <h2>FEEL THE<br /><em>PULSE</em></h2>
+          <p>A neon geometry gauntlet. Tight jumps. Instant retries. Global glory.</p>
+          <div class="cta-row">
+            <button class="btn primary xl" id="btn-play">PLAY</button>
+            <button class="btn ghost xl" id="btn-daily">DAILY</button>
+          </div>
+        </div>
+        <nav class="menu-grid">
+          <button data-go="levels"><b>LEVELS</b><span>10 official tracks</span></button>
+          <button data-go="leaderboard"><b>RANKS</b><span>global leaderboard</span></button>
+          <button data-go="custom"><b>CREATE</b><span>build & publish</span></button>
+          <button data-go="profile"><b>PROFILE</b><span>stars & medals</span></button>
+          <button data-go="achievements"><b>MEDALS</b><span>unlock flex</span></button>
+          <button data-go="settings"><b>SETTINGS</b><span>audio & juice</span></button>
+        </nav>
+      </section>
+
+      <section id="view-levels" class="view">
+        <header class="topbar">
+          <button class="back" data-back>←</button>
+          <div class="brand">SELECT STAGE</div>
+          <button class="chip" id="practice-toggle">NORMAL</button>
+        </header>
+        <div class="level-list" id="level-list"></div>
+      </section>
+
+      <section id="view-game" class="view">
+        <canvas id="game"></canvas>
+        <div id="hud">
+          <div class="hud-top">
+            <div class="hud-left">
+              <button id="btn-pause" class="icon-btn">❚❚</button>
+              <span id="hud-level">FIRST PULSE</span>
+            </div>
+            <div class="hud-right">
+              <span id="hud-attempts">ATTEMPT 1</span>
+              <span id="hud-percent">0%</span>
+            </div>
+          </div>
+          <div class="track"><i id="hud-bar"></i></div>
+        </div>
+        <div id="touch-hint" class="touch-only">TAP TO JUMP · HOLD TO FLY</div>
+        <div id="overlay" class="hidden">
+          <div class="overlay-card" id="overlay-card"></div>
+        </div>
+      </section>
+
+      <section id="view-leaderboard" class="view">
+        <header class="topbar">
+          <button class="back" data-back>←</button>
+          <div class="brand">LEADERBOARD</div>
+          <select id="lb-select" class="select"></select>
+        </header>
+        <div class="tabs" id="lb-tabs">
+          <button class="on" data-tab="level">LEVEL</button>
+          <button data-tab="global">STARS</button>
+        </div>
+        <div id="lb-body" class="panel"></div>
+      </section>
+
+      <section id="view-profile" class="view">
+        <header class="topbar">
+          <button class="back" data-back>←</button>
+          <div class="brand">PROFILE</div>
+          <button class="chip" id="btn-logout" hidden>LOG OUT</button>
+        </header>
+        <div id="profile-body" class="panel"></div>
+      </section>
+
+      <section id="view-achievements" class="view">
+        <header class="topbar">
+          <button class="back" data-back>←</button>
+          <div class="brand">MEDALS</div>
+        </header>
+        <div id="ach-body" class="ach-grid"></div>
+      </section>
+
+      <section id="view-custom" class="view">
+        <header class="topbar">
+          <button class="back" data-back>←</button>
+          <div class="brand">WORKSHOP</div>
+          <button class="chip" id="btn-new-level">+ NEW</button>
+        </header>
+        <div class="tabs" id="custom-tabs">
+          <button class="on" data-tab="browse">BROWSE</button>
+          <button data-tab="editor">EDITOR</button>
+        </div>
+        <div id="custom-browse" class="panel"></div>
+        <div id="custom-editor" class="hidden">
+          <div class="editor-toolbar" id="editor-toolbar"></div>
+          <canvas id="editor-canvas"></canvas>
+          <div class="editor-meta">
+            <input id="ed-name" maxlength="32" placeholder="Level name" />
+            <input id="ed-diff" type="number" min="1" max="10" value="3" />
+            <button class="btn" id="ed-test">TEST</button>
+            <button class="btn primary" id="ed-pub">PUBLISH</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-settings" class="view">
+        <header class="topbar">
+          <button class="back" data-back>←</button>
+          <div class="brand">SETTINGS</div>
+        </header>
+        <div class="settings panel">
+          <label>Master <input type="range" id="vol-master" min="0" max="100" value="80" /></label>
+          <label>Music <input type="range" id="vol-music" min="0" max="100" value="55" /></label>
+          <label>SFX <input type="range" id="vol-sfx" min="0" max="100" value="85" /></label>
+          <label class="check"><input type="checkbox" id="opt-shake" checked /> Screen shake</label>
+          <label class="check"><input type="checkbox" id="opt-particles" checked /> Particles</label>
+          <label class="check"><input type="checkbox" id="opt-trail" checked /> Player trail</label>
+          <label class="check"><input type="checkbox" id="opt-flash" checked /> Hit flash</label>
+          <label class="check"><input type="checkbox" id="opt-reduce" /> Reduce motion</label>
+          <p class="muted tiny">Progress is saved locally and synced when you log in.</p>
+        </div>
+      </section>
+    </div>
+
+    <div id="modal" class="hidden">
+      <div class="modal-card" id="modal-card"></div>
+    </div>
+    <div id="toasts"></div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
