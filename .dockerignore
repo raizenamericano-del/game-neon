@@ -1,0 +1,11 @@
+node_modules
+client/dist
+server/dist
+.git
+.arena
+.cache
+.env
+.env.local
+*.log
+README.md
+docker-compose.yml

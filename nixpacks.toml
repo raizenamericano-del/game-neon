@@ -5,4 +5,4 @@ nixPkgs = ["nodejs_20", "openssl"]
 cmds = ["npx prisma generate", "npm run build"]
 
 [start]
-cmd = "npx prisma migrate deploy && node server/dist/index.js"
+cmd = "node server/dist/index.js"

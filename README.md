@@ -210,16 +210,18 @@ Set paling tidak:
 
 ### 4. Build & start
 
-File `package.json`, `railway.toml`, dan `nixpacks.toml` sudah menyiapkan:
+File `Dockerfile` + `railway.toml` sudah menyiapkan:
 
-- **Build:** `npm install` → `prisma generate` → `npm run build` (Vite + `tsc`)
-- **Start:** `npx prisma migrate deploy && node server/dist/index.js`
+- **Builder:** Dockerfile (lebih stabil di Railway daripada Nixpacks)
+- **Start:** `node server/dist/index.js` — server **langsung listen**, migrasi DB jalan di belakang setelah healthcheck lulus
+- **Healthcheck path:** `/api/health` (jawab 200 tanpa nunggu Postgres)
+
+Game tetap live meski `DATABASE_URL` belum dipasang (mode guest). Setelah service hijau, baru tambahkan plugin Postgres + env, lalu Redeploy.
 
 Di service settings, pastikan:
 
-- **Builder:** Nixpacks (default)
-- **Start command** (jika diminta):  
-  `npx prisma migrate deploy && node server/dist/index.js`
+- **Builder:** Dockerfile (atau Nixpacks — start command yang sama)
+- **Start command:** `node server/dist/index.js`
 - **Healthcheck path:** `/api/health`
 
 ### 5. Domain publik

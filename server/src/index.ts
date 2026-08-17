@@ -62,23 +62,20 @@ const apiLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-app.use("/api", apiLimiter);
-
-app.get("/api/health", async (_req, res) => {
-  let db = "ok";
-  try {
-    await prisma.$queryRaw`SELECT 1`;
-  } catch {
-    db = "down";
-  }
-  res.json({
+app.get("/api/health", (_req, res) => {
+  res.status(200).json({
     ok: true,
     service: "neon-dash",
     time: new Date().toISOString(),
-    db,
     online: getOnlineCount(),
   });
 });
+
+app.get("/health", (_req, res) => {
+  res.status(200).type("text/plain").send("ok");
+});
+
+app.use("/api", apiLimiter);
 
 app.get("/api/levels", (_req, res) => {
   res.json({ levels: OFFICIAL_LEVELS });
@@ -109,9 +106,9 @@ app.get("*", (req, res, next) => {
 app.use("/api", notFound);
 app.use(errorHandler);
 
-server.listen(config.port, "0.0.0.0", async () => {
-  console.log(`NEON DASH listening on :${config.port} (${config.nodeEnv})`);
-  await seedOnBoot();
+server.listen(config.port, "0.0.0.0", () => {
+  console.log(`NEON DASH listening on 0.0.0.0:${config.port} (${config.nodeEnv})`);
+  seedOnBoot().catch((err) => console.warn("[boot]", err));
 });
 
 async function shutdown(signal: string) {

@@ -1,5 +1,9 @@
+import { execFile } from "child_process";
+import { promisify } from "util";
 import bcrypt from "bcryptjs";
-import { prisma } from "./prisma.js";
+import { prisma, hasDatabase } from "./prisma.js";
+
+const execFileAsync = promisify(execFile);
 
 const ACHIEVEMENTS = [
   { id: "first-blood", name: "First Blood", description: "Die for the first time. Welcome to the grind.", icon: "💀", category: "play", requirement: 1 },
@@ -21,8 +25,30 @@ const ACHIEVEMENTS = [
   { id: "all-official", name: "Neon God", description: "Beat every official level.", icon: "👑", category: "progress", requirement: 10 },
 ];
 
+async function migrateIfPossible() {
+  if (!hasDatabase) {
+    console.log("[db] no remote DATABASE_URL — skip migrate");
+    return;
+  }
+  try {
+    console.log("[db] running prisma migrate deploy…");
+    const { stdout, stderr } = await execFileAsync(
+      "npx",
+      ["prisma", "migrate", "deploy"],
+      { timeout: 60_000, env: process.env as NodeJS.ProcessEnv }
+    );
+    if (stdout) console.log(stdout.trim());
+    if (stderr) console.warn(stderr.trim());
+  } catch (err) {
+    console.warn("[db] migrate skipped:", (err as Error).message);
+  }
+}
+
 export async function seedOnBoot() {
   try {
+    await migrateIfPossible();
+    if (!hasDatabase) return;
+
     await prisma.$queryRaw`SELECT 1`;
     const count = await prisma.achievement.count();
     if (count < ACHIEVEMENTS.length) {
