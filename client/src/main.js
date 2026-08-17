@@ -100,6 +100,18 @@ function bindUI() {
     const card = e.target.closest("[data-id]");
     if (card) playOfficial(card.dataset.id);
   });
+  $("#skill-dock")?.addEventListener("pointerdown", (e) => {
+    const btn = e.target.closest("[data-skill]");
+    if (!btn || !state.game) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const name = btn.dataset.skill;
+    if (name === "slide") state.game.input.slide = true;
+    else state.game.input.tapSkill(name);
+  });
+  $("#skill-dock")?.addEventListener("pointerup", (e) => {
+    if (e.target.closest("[data-skill='slide']") && state.game) state.game.input.slide = false;
+  });
   $("#btn-pause").onclick = () => {
     if (!state.game) return;
     state.game.paused = true;

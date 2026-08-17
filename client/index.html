@@ -47,7 +47,7 @@
             </div>
           </div>
           <h2>FEEL THE<br /><em>PULSE</em></h2>
-          <p>A neon geometry gauntlet. Tight jumps. Instant retries. Global glory.</p>
+          <p>Not just a jumper. Dash, slide, shield, slow time, and detonate a nova.</p>
           <div class="cta-row">
             <button class="btn primary xl" id="btn-play">PLAY</button>
             <button class="btn ghost xl" id="btn-daily">DAILY</button>
@@ -86,8 +86,16 @@
             </div>
           </div>
           <div class="track"><i id="hud-bar"></i></div>
+          <div id="hud-combo"></div>
         </div>
-        <div id="touch-hint" class="touch-only">TAP TO JUMP · HOLD TO FLY</div>
+        <div id="skill-dock">
+          <button type="button" data-skill="dash"><b>⇧</b><span>DASH</span><i></i></button>
+          <button type="button" data-skill="slide"><b>S</b><span>SLIDE</span><i></i></button>
+          <button type="button" data-skill="shield"><b>E</b><span>AEGIS</span><i></i></button>
+          <button type="button" data-skill="slow"><b>Q</b><span>OVERCLOCK</span><i></i></button>
+          <button type="button" data-skill="nova"><b>F</b><span>NOVA</span><i></i></button>
+        </div>
+        <div id="touch-hint" class="touch-only">TAP JUMP · DOUBLE TAP IN AIR · SKILLS BELOW</div>
         <div id="overlay" class="hidden">
           <div class="overlay-card" id="overlay-card"></div>
         </div>
@@ -160,7 +168,7 @@
           <label class="check"><input type="checkbox" id="opt-trail" checked /> Player trail</label>
           <label class="check"><input type="checkbox" id="opt-flash" checked /> Hit flash</label>
           <label class="check"><input type="checkbox" id="opt-reduce" /> Reduce motion</label>
-          <p class="muted tiny">Progress is saved locally and synced when you log in.</p>
+          <p class="muted tiny">Progress stays on this device. No database required.</p>
         </div>
       </section>
     </div>

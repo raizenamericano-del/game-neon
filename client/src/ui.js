@@ -157,7 +157,8 @@ export function authForm(mode) {
 }
 
 export function overlayPause() {
-  return `<h2>PAUSED</h2><p>The pulse can wait.</p>
+  return `<h2>PAUSED</h2>
+    <p>SPACE jump · again in air for double<br/>S slide · SHIFT dash · E aegis · Q overclock · F nova</p>
     <div class="overlay-actions">
       <button class="btn primary" data-ov="resume">RESUME</button>
       <button class="btn" data-ov="retry">RETRY</button>

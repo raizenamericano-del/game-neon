@@ -154,7 +154,29 @@ img { max-width: 100%; }
 .hud-left, .hud-right { display: flex; align-items: center; gap: 10px; font-family: var(--font-dis); font-size: 12px; letter-spacing: 0.12em; }
 .track { margin-top: 10px; height: 4px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden; }
 #hud-bar { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--mag)); box-shadow: 0 0 12px var(--cyan); }
-#touch-hint { position: absolute; bottom: 18px; left: 0; right: 0; text-align: center; letter-spacing: 0.2em; font-size: 11px; color: rgba(255,255,255,0.35); pointer-events: none; }
+#hud-combo {
+  position: absolute; left: 50%; top: 52px; transform: translateX(-50%);
+  font-family: var(--font-dis); letter-spacing: 0.14em; color: var(--gold);
+  text-shadow: 0 0 16px rgba(255,209,102,0.6); font-size: 18px; pointer-events: none;
+}
+#skill-dock {
+  position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%);
+  display: flex; gap: 8px; pointer-events: auto; z-index: 5;
+}
+#skill-dock button {
+  position: relative; min-width: 68px; padding: 8px 10px 10px;
+  border-radius: 14px; border: 1px solid var(--line); background: rgba(10,4,22,0.72);
+  backdrop-filter: blur(12px); overflow: hidden;
+}
+#skill-dock button b { display: block; font-family: var(--font-dis); font-size: 13px; color: var(--cyan); }
+#skill-dock button span { font-size: 10px; letter-spacing: 0.12em; color: var(--muted); }
+#skill-dock button i {
+  position: absolute; left: 0; bottom: 0; height: 3px; width: 100%;
+  background: var(--cyan); transform-origin: left; transform: scaleX(0);
+}
+#skill-dock button.ready i { transform: scaleX(1); background: var(--ok); }
+#skill-dock button.hot { border-color: var(--cyan); box-shadow: 0 0 16px rgba(0,245,255,0.25); }
+#touch-hint { position: absolute; bottom: 86px; left: 0; right: 0; text-align: center; letter-spacing: 0.2em; font-size: 11px; color: rgba(255,255,255,0.35); pointer-events: none; }
 .touch-only { display: none; }
 @media (pointer: coarse) { .touch-only { display: block; } }
 

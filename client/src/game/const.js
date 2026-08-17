@@ -1,25 +1,29 @@
 export const UNIT = 44;
 export const FIXED = 1 / 120;
-export const SPEEDS = { 0.5: 8.4, 1: 10.4, 2: 12.85, 3: 15.6, 4: 19.4 };
+export const SPEEDS = { 0.5: 8.6, 1: 10.2, 2: 12.4, 3: 14.8, 4: 18.2 };
 
 export const CUBE = {
-  gravity: 92,
-  jump: 19.4,
-  hit: 0.8,
-  coyote: 0.07,
-  buffer: 0.1,
+  gravity: 76,
+  jump: 19.0,
+  airJump: 17.4,
+  hit: 0.78,
+  coyote: 0.1,
+  buffer: 0.14,
+  airJumps: 1,
+  slideHit: 0.36,
+  slideTime: 0.42,
 };
 
 export const SHIP = {
-  gravity: 26,
-  thrust: 40,
-  hit: 0.72,
-  maxVy: 16,
+  gravity: 24,
+  thrust: 38,
+  hit: 0.7,
+  maxVy: 15,
 };
 
 export const BALL = {
-  gravity: 78,
-  hit: 0.78,
+  gravity: 72,
+  hit: 0.76,
 };
 
 export const WAVE = {
@@ -27,26 +31,17 @@ export const WAVE = {
 };
 
 export const UFO = {
-  gravity: 40,
-  jump: 13.6,
-  hit: 0.72,
-  maxVy: 18,
+  gravity: 38,
+  jump: 13.2,
+  hit: 0.7,
+  maxVy: 17,
+};
+
+export const SKILLS = {
+  dash: { cd: 3.2, dur: 0.22, invuln: 0.38, name: "DASH" },
+  shield: { cd: 7.5, dur: 6, name: "AEGIS" },
+  slow: { cd: 9.5, dur: 1.7, scale: 0.4, name: "OVERCLOCK" },
+  nova: { cd: 11, dur: 0.7, radius: 3.4, name: "NOVA" },
 };
 
 export const FORMS = ["cube", "ship", "ball", "wave", "ufo"];
-
-export const COLORS = {
-  spike: "#ff3864",
-  block: "#1a1030",
-  blockLine: "#00f5ff",
-  orb: { yellow: "#ffd166", pink: "#ff7ad9", blue: "#4da3ff", red: "#ff5d5d", green: "#3dffb0" },
-  pad: { yellow: "#ffd166", pink: "#ff7ad9", blue: "#4da3ff", red: "#ff5d5d" },
-  coin: "#ffd166",
-  portal: {
-    cube: "#00f5ff",
-    ship: "#ff9f1c",
-    ball: "#c77dff",
-    wave: "#3dffb0",
-    ufo: "#ff2bd6",
-  },
-};
